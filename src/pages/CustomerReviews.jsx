@@ -188,7 +188,6 @@ export default function CustomerReviews() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full border border-[#FBAEB9]/50 shadow-2xl relative">
             
-            {/* Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-[#71305D] transition-colors"

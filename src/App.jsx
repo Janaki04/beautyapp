@@ -6,6 +6,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from './pages/Home';
 import ProductListingPage from './pages/ProductListingPage';
+import { WishlistProvider } from './components/WishlistContext';
+import WishlistPage from './pages/WishlistPage';
 
 
 
@@ -22,6 +24,7 @@ const EmptyPage = () => (
 
 export default function App() {
   return (
+    <WishlistProvider>
     <Router>
       <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
         <Header />
@@ -34,7 +37,7 @@ export default function App() {
             <Route path="/signup" element={<EmptyPage />} />
             <Route path="/login" element={<EmptyPage />} />
             <Route path="/cart" element={<EmptyPage />} />
-            <Route path="/wishlist" element={<EmptyPage />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
@@ -51,5 +54,6 @@ export default function App() {
       />
       </div>
     </Router>
+    </WishlistProvider>
   );
 }

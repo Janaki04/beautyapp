@@ -4,7 +4,7 @@ import {
   Grid, List, RotateCcw, ChevronLeft, ChevronRight, Filter 
 } from 'lucide-react';
 
- export const SearchAndSortBar = ({ 
+export const SearchAndSortBar = ({ 
   searchQuery, setSearchQuery, viewMode, setViewMode, sortBy, setSortBy, onOpenMobileFilter 
 }) => (
   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-[#D282A8]/20">
@@ -18,7 +18,7 @@ import {
         className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#D282A8]/30 rounded-xl text-xs text-[#33182C] placeholder-[#8E507D]/60 focus:outline-none focus:border-[#71305D] shadow-xs transition-all"
       />
       {searchQuery && (
-        <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E507D]">
+        <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E507D] cursor-pointer">
           <X className="w-4 h-4" />
         </button>
       )}
@@ -27,7 +27,7 @@ import {
     <div className="flex items-center justify-between md:justify-end gap-3 flex-wrap">
       <button
         onClick={onOpenMobileFilter}
-        className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-white border border-[#D282A8]/30 rounded-xl text-xs font-semibold text-[#71305D]"
+        className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-white border border-[#D282A8]/30 rounded-xl text-xs font-semibold text-[#71305D] cursor-pointer"
       >
         <Filter className="w-4 h-4" />
         <span>Filters</span>
@@ -36,13 +36,13 @@ import {
       <div className="hidden sm:flex items-center bg-white border border-[#D282A8]/30 rounded-xl p-1 shadow-xs">
         <button
           onClick={() => setViewMode('grid')}
-          className={`p-1.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-[#71305D] text-white' : 'text-[#8E507D]'}`}
+          className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'grid' ? 'bg-[#71305D] text-white' : 'text-[#8E507D]'}`}
         >
           <Grid className="w-4 h-4" />
         </button>
         <button
           onClick={() => setViewMode('list')}
-          className={`p-1.5 rounded-lg transition-all ${viewMode === 'list' ? 'bg-[#71305D] text-white' : 'text-[#8E507D]'}`}
+          className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'list' ? 'bg-[#71305D] text-white' : 'text-[#8E507D]'}`}
         >
           <List className="w-4 h-4" />
         </button>
@@ -79,7 +79,7 @@ export const FilterSidebar = ({
         <SlidersHorizontal className="w-4 h-4" /> Filter Products
       </h3>
       {hasActiveFilters && (
-        <button onClick={onReset} className="text-[11px] text-[#8E507D] hover:text-[#71305D] flex items-center gap-1">
+        <button onClick={onReset} className="text-[11px] text-[#8E507D] hover:text-[#71305D] flex items-center gap-1 cursor-pointer">
           <RotateCcw className="w-3 h-3" /> Reset
         </button>
       )}
@@ -92,7 +92,7 @@ export const FilterSidebar = ({
           <button
             key={cat}
             onClick={() => onSelectCategory(cat)}
-            className={`w-full text-left text-xs py-1.5 px-3 rounded-lg font-medium transition-all flex items-center justify-between ${
+            className={`w-full text-left text-xs py-1.5 px-3 rounded-lg font-medium transition-all flex items-center justify-between cursor-pointer ${
               selectedCategory === cat ? 'bg-[#71305D] text-white font-bold' : 'text-[#33182C] hover:bg-[#FAF4F7]'
             }`}
           >
@@ -112,7 +112,7 @@ export const FilterSidebar = ({
               type="checkbox"
               checked={selectedBrands.includes(brand)}
               onChange={() => onToggleBrand(brand)}
-              className="rounded border-[#D282A8] text-[#71305D] focus:ring-[#71305D]"
+              className="rounded border-[#D282A8] text-[#71305D] focus:ring-[#71305D] cursor-pointer"
             />
             <span>{brand}</span>
           </label>
@@ -143,7 +143,7 @@ export const FilterSidebar = ({
           <button
             key={stars}
             onClick={() => setMinRating(minRating === stars ? 0 : stars)}
-            className={`flex-1 py-1.5 rounded-lg border text-xs flex items-center justify-center gap-1 ${
+            className={`flex-1 py-1.5 rounded-lg border text-xs flex items-center justify-center gap-1 cursor-pointer ${
               minRating === stars ? 'bg-[#71305D] text-white' : 'bg-white text-[#8E507D] border-[#D282A8]/30'
             }`}
           >
@@ -163,24 +163,28 @@ export const ProductCard = ({ product, viewMode, isWishlisted, isInCart, onToggl
     <div className={`relative overflow-hidden bg-[#FAF4F7] ${viewMode === 'list' ? 'sm:w-1/3 aspect-square' : 'aspect-square'}`}>
       <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
       
-      <div className="absolute top-3 left-3 flex flex-col gap-1">
+      <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
         {product.isNew && <span className="bg-[#71305D] text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">New</span>}
         {product.isBestSeller && <span className="bg-[#FBAEB9] text-[#71305D] text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Best Seller</span>}
       </div>
 
       <button
-        onClick={() => onToggleWishlist(product.id)}
-        className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white transition-all shadow-xs"
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleWishlist(product);
+        }}
+        aria-label="Wishlist"
+        className="absolute top-3 right-3 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white hover:text-[#FBAEB9] transition-all shadow-xs cursor-pointer"
       >
-        <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
+        <Heart className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
       </button>
 
-      <div className="absolute inset-0 bg-[#71305D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-[#71305D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 z-10 pointer-events-none">
         <button
           onClick={() => onQuickView(product)}
-          className="px-4 py-2 bg-white text-[#71305D] rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 hover:bg-[#FBAEB9]"
+          className="pointer-events-auto px-4 py-2 bg-white text-[#71305D] rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 hover:bg-[#FBAEB9] cursor-pointer"
         >
-          <Eye className="w-3.5 h-3.5" /> Quick View
+          <Eye className="w-3.5 h-3.5" /> View
         </button>
       </div>
     </div>
@@ -202,7 +206,7 @@ export const ProductCard = ({ product, viewMode, isWishlisted, isInCart, onToggl
         <span className="text-lg font-bold text-[#71305D]">${product.price}.00</span>
         <button
           onClick={() => onToggleCart(product.id)}
-          className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
             isInCart ? 'bg-[#8E507D] text-white' : 'bg-[#FBAEB9] text-[#71305D] hover:bg-[#71305D] hover:text-white'
           }`}
         >
@@ -219,7 +223,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     <button
       onClick={() => onPageChange(currentPage - 1)}
       disabled={currentPage === 1}
-      className="px-4 py-2 rounded-xl border border-[#D282A8]/30 bg-white text-xs font-semibold text-[#71305D] disabled:opacity-40 flex items-center gap-1"
+      className="px-4 py-2 rounded-xl border border-[#D282A8]/30 bg-white text-xs font-semibold text-[#71305D] disabled:opacity-40 flex items-center gap-1 cursor-pointer disabled:cursor-not-allowed"
     >
       <ChevronLeft className="w-4 h-4" /> Previous
     </button>
@@ -229,7 +233,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => (
         <button
           key={i + 1}
           onClick={() => onPageChange(i + 1)}
-          className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${
+          className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
             currentPage === i + 1 ? 'bg-[#71305D] text-white font-bold' : 'bg-white text-[#8E507D] border border-[#D282A8]/20'
           }`}
         >
@@ -241,23 +245,35 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     <button
       onClick={() => onPageChange(currentPage + 1)}
       disabled={currentPage === totalPages}
-      className="px-4 py-2 rounded-xl border border-[#D282A8]/30 bg-white text-xs font-semibold text-[#71305D] disabled:opacity-40 flex items-center gap-1"
+      className="px-4 py-2 rounded-xl border border-[#D282A8]/30 bg-white text-xs font-semibold text-[#71305D] disabled:opacity-40 flex items-center gap-1 cursor-pointer disabled:cursor-not-allowed"
     >
       Next <ChevronRight className="w-4 h-4" />
     </button>
   </div>
 );
 
-export const QuickViewModal = ({ product, onClose, onAddToCart }) => {
+export const QuickViewModal = ({ product, onClose, onAddToCart, isWishlisted, onToggleWishlist }) => {
   if (!product) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#71305D]/60 backdrop-blur-xs">
       <div className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-[#D282A8]/30 relative flex flex-col md:flex-row">
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 text-[#71305D]">
+        <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 text-[#71305D] cursor-pointer hover:bg-[#FAF4F7]">
           <X className="w-5 h-5" />
         </button>
-        <div className="md:w-1/2 aspect-square bg-[#FAF4F7]">
+        <div className="md:w-1/2 aspect-square bg-[#FAF4F7] relative">
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          {onToggleWishlist && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleWishlist(product);
+              }}
+              aria-label="Wishlist"
+              className="absolute top-4 left-4 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white transition-all shadow-xs cursor-pointer"
+            >
+              <Heart className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
+            </button>
+          )}
         </div>
         <div className="p-6 md:w-1/2 flex flex-col justify-between space-y-4">
           <div>
@@ -269,7 +285,7 @@ export const QuickViewModal = ({ product, onClose, onAddToCart }) => {
             <div className="text-2xl font-bold text-[#71305D]">${product.price}.00</div>
             <button
               onClick={() => { onAddToCart(product.id); onClose(); }}
-              className="w-full py-3 bg-[#71305D] text-white rounded-xl text-xs font-bold hover:bg-[#8E507D] flex items-center justify-center gap-2"
+              className="w-full py-3 bg-[#71305D] text-white rounded-xl text-xs font-bold hover:bg-[#8E507D] flex items-center justify-center gap-2 cursor-pointer transition-colors"
             >
               <ShoppingBag className="w-4 h-4" /> Add to Bag
             </button>

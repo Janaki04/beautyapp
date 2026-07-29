@@ -48,7 +48,6 @@ export default function Newsletter() {
               Subscribe to receive private sale access, luxury skincare tips, and insider product drops directly to your inbox.
             </p>
             {status === 'success' ? (
-              /* SUCCESS STATE */
               <div className="p-6 rounded-xl bg-[#8E507D]/50 border border-[#FBAEB9]/50 flex flex-col items-center justify-center space-y-2 animate-fadeIn">
                 <CheckCircle2 className="w-10 h-10 text-[#FBAEB9]" />
                 <h3 className="text-lg font-serif font-semibold text-white">

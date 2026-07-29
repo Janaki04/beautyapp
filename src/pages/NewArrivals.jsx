@@ -9,6 +9,8 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
+import { useWishlist } from '../components/WishlistContext';
+
 const PRODUCTS = [
   {
     id: 1,
@@ -64,18 +66,16 @@ const CATEGORIES = ['All', 'Makeup', 'Skincare', 'Fragrance'];
 
 export default function NewArrivals() {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [wishlist, setWishlist] = useState([]);
   const [cart, setCart] = useState([]);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [addedToast, setAddedToast] = useState('');
+
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
   const filteredProducts = activeCategory === 'All' 
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === activeCategory);
-  const toggleWishlist = (id) => {
-    setWishlist(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
-  };
+
   const handleAddToCart = (product) => {
     setCart(prev => [...prev, product.id]);
     setAddedToast(`${product.name} added to bag!`);
@@ -112,7 +112,7 @@ export default function NewArrivals() {
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all duration-300 cursor-pointer ${
                   activeCategory === category
                     ? 'bg-[#71305D] text-[#FAF4F7] shadow-md shadow-[#71305D]/20 scale-105'
                     : 'bg-[#FAF4F7] text-[#8E507D] border border-[#D282A8]/30 hover:border-[#71305D] hover:text-[#71305D]'
@@ -123,9 +123,10 @@ export default function NewArrivals() {
             ))}
           </div>
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {filteredProducts.map((product) => {
-            const isWishlisted = wishlist.includes(product.id);
+            const isWishlisted = isInWishlist(product.id);
             const isInCart = cart.includes(product.id);
 
             return (
@@ -139,26 +140,35 @@ export default function NewArrivals() {
                     alt={product.name}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-3 left-3 bg-[#71305D] text-[#FAF4F7] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#D282A8]/40">
+                  
+                  {/* Badge */}
+                  <span className="absolute top-3 left-3 z-10 bg-[#71305D] text-[#FAF4F7] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#D282A8]/40">
                     {product.badge}
                   </span>
+
+                  {/* Heart / Wishlist Button - High z-index (z-20) guarantees clickability */}
                   <button
-                    onClick={() => toggleWishlist(product.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(product);
+                    }}
                     aria-label="Wishlist"
-                    className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white hover:text-[#FBAEB9] transition-all shadow-sm"
+                    className="absolute top-3 right-3 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white hover:text-[#FBAEB9] transition-all shadow-sm cursor-pointer"
                   >
-                    <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
+                    <Heart className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
                   </button>
-                  <div className="absolute inset-0 bg-[#71305D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+
+                  <div className="absolute inset-0 bg-[#71305D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 z-10 pointer-events-none">
                     <button
                       onClick={() => setQuickViewProduct(product)}
-                      className="px-4 py-2.5 bg-white text-[#71305D] rounded-full text-xs font-bold shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-[#FBAEB9]"
+                      className="pointer-events-auto px-4 py-2.5 bg-white text-[#71305D] rounded-full text-xs font-bold shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-[#FBAEB9] cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Quick View</span>
                     </button>
                   </div>
                 </div>
+
                 <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                   <div>
                     <div className="flex items-center justify-between text-[11px] text-[#8E507D] font-medium mb-1">
@@ -182,7 +192,7 @@ export default function NewArrivals() {
 
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 ${
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 cursor-pointer ${
                         isInCart 
                           ? 'bg-[#8E507D] text-[#FAF4F7]'
                           : 'bg-[#FBAEB9] text-[#71305D] hover:bg-[#71305D] hover:text-[#FAF4F7]'
@@ -206,21 +216,32 @@ export default function NewArrivals() {
             );
           })}
         </div>
+
         {quickViewProduct && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#71305D]/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-[#D282A8]/30 relative flex flex-col md:flex-row">
               <button
                 onClick={() => setQuickViewProduct(null)}
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 text-[#71305D] hover:bg-[#FAF4F7] transition-colors"
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 text-[#71305D] hover:bg-[#FAF4F7] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className="md:w-1/2 aspect-square md:aspect-auto bg-[#FAF4F7]">
+              <div className="md:w-1/2 aspect-square md:aspect-auto bg-[#FAF4F7] relative">
                 <img 
                   src={quickViewProduct.image} 
                   alt={quickViewProduct.name}
                   className="w-full h-full object-cover"
                 />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWishlist(quickViewProduct);
+                  }}
+                  aria-label="Wishlist"
+                  className="absolute top-4 left-4 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white hover:text-[#FBAEB9] transition-all shadow-sm cursor-pointer"
+                >
+                  <Heart className={`w-4 h-4 transition-colors ${isInWishlist(quickViewProduct.id) ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
+                </button>
               </div>
               <div className="p-6 md:w-1/2 flex flex-col justify-between space-y-4">
                 <div>
@@ -257,7 +278,7 @@ export default function NewArrivals() {
                       handleAddToCart(quickViewProduct);
                       setQuickViewProduct(null);
                     }}
-                    className="w-full py-3 bg-[#71305D] text-[#FAF4F7] rounded-xl text-xs font-bold hover:bg-[#8E507D] transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-[#71305D] text-[#FAF4F7] rounded-xl text-xs font-bold hover:bg-[#8E507D] transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ShoppingBag className="w-4 h-4" />
                     <span>Add to Shopping Bag</span>
@@ -267,7 +288,6 @@ export default function NewArrivals() {
             </div>
           </div>
         )}
-
       </div>
     </section>
   );

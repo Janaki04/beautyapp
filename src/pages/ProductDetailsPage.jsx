@@ -10,23 +10,39 @@ import {
   Plus, 
   Minus, 
   Check, 
-  Sparkles
+  Sparkles,
+  Heart
 } from 'lucide-react';
 
+import { shadesData } from '../components/variantsData';
+import { useWishlist } from '../components/WishlistContext';
+
 export default function ProductDetailsPage({ productData }) {
-  // If no productData is provided, render nothing
   if (!productData) return null;
 
-  const images = productData.images || (productData.image ? [productData.image] : []);
-  const shades = productData.shades || [];
-  const details = productData.details || {};
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
-  const [selectedImage, setSelectedImage] = useState(0);
+  const images = productData.images || (productData.image ? [productData.image] : []);
+  const shades = shadesData;
+  const details = productData.details || {};
+  const reviewsList = productData.reviews || [];
+
   const [selectedShade, setSelectedShade] = useState(shades[0] || null);
+  const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('details');
   const [bundleSelection, setBundleSelection] = useState([]);
   const [addedToast, setAddedToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const currentPrice = selectedShade?.price ?? productData.price;
+  const currentOriginalPrice = selectedShade?.originalPrice ?? productData.originalPrice;
+
+  const isWishlisted = isInWishlist(productData.id);
+
+  const handleShadeSelect = (shade) => {
+    setSelectedShade(shade);
+  };
 
   const handleNextImage = () => {
     if (images.length > 0) {
@@ -45,6 +61,18 @@ export default function ProductDetailsPage({ productData }) {
   };
 
   const handleAddToCart = () => {
+    setToastMessage(`${quantity}x ${productData.name} ${selectedShade ? `(${selectedShade.name || selectedShade.title})` : ''} added to your bag`);
+    setAddedToast(true);
+    setTimeout(() => setAddedToast(false), 3000);
+  };
+
+  const handleToggleWishlist = () => {
+    toggleWishlist(productData);
+    setToastMessage(
+      isWishlisted 
+        ? `${productData.name} removed from your wishlist` 
+        : `${productData.name} added to your wishlist`
+    );
     setAddedToast(true);
     setTimeout(() => setAddedToast(false), 3000);
   };
@@ -59,24 +87,26 @@ export default function ProductDetailsPage({ productData }) {
   if (details.description || productData.description) {
     availableTabs.push({ id: 'details', label: 'Details', content: details.description || productData.description });
   }
-  if (details.howToUse || productData.howToUse) {
+  if (details.description || productData.description) {
     availableTabs.push({ id: 'howToUse', label: 'How to Use', content: details.howToUse || productData.howToUse });
   }
-  if (details.ingredients || productData.ingredients) {
+  if (details.description || productData.description) {
     availableTabs.push({ id: 'ingredients', label: 'Ingredients', content: details.ingredients || productData.ingredients });
   }
 
-  const currentTabObj = availableTabs.find((t) => t.id === activeTab) || availableTabs[0];
+  const activeTabContent = availableTabs.find((t) => t.id === activeTab) || availableTabs[0];
 
   return (
     <div className="bg-[#FAF4F7] min-h-screen text-[#33182C] font-sans pb-16 pt-8">
       
       {addedToast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#71305D] text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#71305D] text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 animate-fade-in">
           <div className="w-6 h-6 rounded-full bg-[#FBAEB9] flex items-center justify-center text-[#71305D]">
             <Check className="w-4 h-4 stroke-[3]" />
           </div>
-          <span className="text-xs font-semibold tracking-wide">Item added to your bag</span>
+          <span className="text-xs font-semibold tracking-wide">
+            {toastMessage}
+          </span>
         </div>
       )}
 
@@ -109,22 +139,30 @@ export default function ProductDetailsPage({ productData }) {
                   <img
                     src={images[selectedImage]}
                     alt={productData.name || 'Product Image'}
-                    className="w-full h-full object-contain p-4"
+                    className="w-full h-full object-contain p-4 transition-all duration-300"
                   />
                 )}
+
+                <button
+                  onClick={handleToggleWishlist}
+                  aria-label="Wishlist"
+                  className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white transition-all shadow-md cursor-pointer"
+                >
+                  <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
+                </button>
 
                 {images.length > 1 && (
                   <>
                     <button 
                       onClick={handlePrevImage}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-black transition-colors"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-black transition-colors cursor-pointer"
                       aria-label="Previous Image"
                     >
                       <ChevronLeft className="w-8 h-8 stroke-[1.5]" />
                     </button>
                     <button 
                       onClick={handleNextImage}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-black transition-colors"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-black transition-colors cursor-pointer"
                       aria-label="Next Image"
                     >
                       <ChevronRight className="w-8 h-8 stroke-[1.5]" />
@@ -142,7 +180,7 @@ export default function ProductDetailsPage({ productData }) {
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={`pb-2 border-b-2 transition-all cursor-pointer whitespace-nowrap ${
-                        (currentTabObj?.id === tab.id)
+                        (activeTabContent?.id === tab.id)
                           ? 'border-[#71305D] text-[#71305D]'
                           : 'border-transparent text-[#8E507D] hover:text-[#71305D]'
                       }`}
@@ -152,13 +190,13 @@ export default function ProductDetailsPage({ productData }) {
                   ))}
                 </div>
 
-                <div className="text-xs text-[#33182C] leading-relaxed min-h-[60px]">
-                  {currentTabObj?.id === 'ingredients' ? (
+                <div className="text-xs text-[#33182C] w-full leading-relaxed min-h-[60px]">
+                  {activeTabContent?.id === 'ingredients' ? (
                     <p className="font-mono text-[11px] bg-[#FAF4F7] p-3 rounded-lg border border-[#D282A8]/20 text-[#8E507D]">
-                      {currentTabObj?.content}
+                      {activeTabContent?.content}
                     </p>
                   ) : (
-                    <p>{currentTabObj?.content}</p>
+                    <p>{activeTabContent?.content}</p>
                   )}
                 </div>
               </div>
@@ -170,15 +208,15 @@ export default function ProductDetailsPage({ productData }) {
             <div className="space-y-4">
               <div>
                 {productData.brand && (
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#8E507D]">
+                  <span className="text-start flex text-xs font-bold uppercase tracking-widest text-[#8E507D]">
                     {productData.brand}
                   </span>
                 )}
-                <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#71305D] mt-1">
+                <h1 className="text-start text-2xl sm:text-3xl font-serif font-bold text-[#71305D] mt-1">
                   {productData.name}
                 </h1>
                 {productData.subtitle && (
-                  <p className="text-xs text-[#8E507D] font-light mt-0.5">{productData.subtitle}</p>
+                  <p className="text-start text-xs text-[#8E507D] font-light mt-0.5">{productData.subtitle}</p>
                 )}
               </div>
 
@@ -201,14 +239,14 @@ export default function ProductDetailsPage({ productData }) {
               )}
 
               <div className="flex items-baseline gap-3 pt-2">
-                {productData.price && (
+                {currentPrice && (
                   <span className="text-3xl font-serif font-bold text-[#71305D]">
-                    ${productData.price}.00
+                    ${currentPrice}.00
                   </span>
                 )}
-                {productData.originalPrice && (
+                {currentOriginalPrice && (
                   <span className="text-base text-[#8E507D]/60 line-through">
-                    ${productData.originalPrice}.00
+                    ${currentOriginalPrice}.00
                   </span>
                 )}
               </div>
@@ -221,33 +259,47 @@ export default function ProductDetailsPage({ productData }) {
 
               {shades.length > 0 && (
                 <div className="space-y-2.5 pt-2">
-                  <span className="text-xs font-bold text-[#71305D] uppercase tracking-wider block">
-                    Shade: <span className="font-normal text-[#8E507D]">{selectedShade?.name}</span>
+                  <span className="flex text-xs font-bold text-[#71305D] uppercase tracking-wider block">
+                    Variant / Shade: <span className="font-normal text-[#8E507D]">{selectedShade?.name || selectedShade?.title}</span>
                   </span>
-                  <div className="flex items-center gap-3">
-                    {shades.map((shade) => (
-                      <button
-                        key={shade.id || shade.name}
-                        onClick={() => setSelectedShade(shade)}
-                        className={`relative w-8 h-8 rounded-full transition-all flex items-center justify-center cursor-pointer ${
-                          selectedShade?.id === shade.id || selectedShade?.name === shade.name
-                            ? 'ring-2 ring-offset-2 ring-[#71305D] scale-110'
-                            : 'hover:scale-105 opacity-85'
-                        }`}
-                        style={{ backgroundColor: shade.hex }}
-                        title={shade.name}
-                      >
-                        {(selectedShade?.id === shade.id || selectedShade?.name === shade.name) && (
-                          <Check className="w-3.5 h-3.5 text-white drop-shadow-xs" />
-                        )}
-                      </button>
-                    ))}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {shades.map((shade, idx) => {
+                      const isSelected = (selectedShade?.id && selectedShade.id === shade.id) || selectedShade?.name === shade.name;
+                      
+                      return shade.hex ? (
+                        <button
+                          key={shade.id || idx}
+                          onClick={() => handleShadeSelect(shade)}
+                          className={`relative w-8 h-8 rounded-full transition-all flex items-center justify-center cursor-pointer ${
+                            isSelected 
+                              ? 'ring-2 ring-offset-2 ring-[#71305D] scale-110 shadow-sm' 
+                              : 'hover:scale-105 opacity-85 hover:opacity-100'
+                          }`}
+                          style={{ backgroundColor: shade.hex }}
+                          title={shade.name || shade.title}
+                        >
+                          {isSelected && <Check className="w-3.5 h-3.5 text-white drop-shadow-xs" />}
+                        </button>
+                      ) : (
+                        <button
+                          key={shade.id || idx}
+                          onClick={() => handleShadeSelect(shade)}
+                          className={`px-3 py-1.5 text-xs rounded-xl border transition-all cursor-pointer ${
+                            isSelected 
+                              ? 'border-[#71305D] bg-[#71305D] text-white font-bold shadow-sm' 
+                              : 'border-[#D282A8]/30 bg-white text-[#71305D] hover:border-[#71305D]'
+                          }`}
+                        >
+                          {shade.name || shade.title}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               <div className="space-y-2 pt-2">
-                <span className="text-xs font-bold text-[#71305D] uppercase tracking-wider block">Quantity</span>
+                <span className="flex text-xs font-bold text-[#71305D] uppercase tracking-wider block">Quantity</span>
                 <div className="flex items-center bg-white border border-[#D282A8]/30 rounded-xl w-fit p-1 shadow-xs">
                   <button
                     onClick={() => handleQuantityChange(-1)}
@@ -268,18 +320,26 @@ export default function ProductDetailsPage({ productData }) {
               </div>
 
               <div className="space-y-2.5 pt-4">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleToggleWishlist}
+                    className={`flex-1 py-3.5 font-bold text-xs uppercase tracking-widest rounded-2xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer ${
+                      isWishlisted 
+                        ? 'bg-[#71305D] text-white hover:bg-[#8E507D]' 
+                        : 'bg-[#FBAEB9] text-[#71305D] hover:bg-[#71305D] hover:text-white'
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-white text-white' : ''}`} />
+                    {isWishlisted ? 'Remove From Wishlist' : 'Add To Wishlist'}
+                  </button>
+                </div>
+
                 <button
                   onClick={handleAddToCart}
-                  className="w-full py-3.5 bg-[#FBAEB9] text-[#71305D] font-bold text-xs uppercase tracking-widest rounded-2xl hover:bg-[#71305D] hover:text-white transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 bg-[#71305D] text-white font-bold text-xs uppercase tracking-widest rounded-2xl hover:bg-[#8E507D] transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  Add To Shopping Bag
-                </button>
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full py-3.5 bg-[#71305D] text-white font-bold text-xs uppercase tracking-widest rounded-2xl hover:bg-[#8E507D] transition-all shadow-md cursor-pointer"
-                >
-                  Buy It Now
+                  Add To Cart
                 </button>
               </div>
 
@@ -299,9 +359,57 @@ export default function ProductDetailsPage({ productData }) {
               </div>
 
             </div>
+            
           </div>
         </div>
       </main>
+
+      {reviewsList.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-[#D282A8]/20 mt-8">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#D282A8]/20 shadow-xs space-y-6">
+            <div className="flex items-center justify-between border-b border-[#D282A8]/20 pb-4">
+              <h3 className="text-lg font-serif font-bold text-[#71305D]">Customer Reviews</h3>
+              {productData.rating && (
+                <div className="flex items-center gap-2">
+                  <div className="flex text-[#FBAEB9]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${i < Math.floor(productData.rating) ? 'fill-[#FBAEB9]' : 'text-gray-200'}`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-[#71305D]">{productData.rating} out of 5</span>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-4 divide-y divide-[#D282A8]/15">
+              {reviewsList.map((review, idx) => (
+                <div key={review.id || idx} className="pt-4 first:pt-0 space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-[#71305D]">{review.author || 'Verified Buyer'}</span>
+                    <span className="text-[#8E507D]">{review.date}</span>
+                  </div>
+                  {review.rating && (
+                    <div className="flex text-[#FBAEB9]">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-[#FBAEB9]' : 'text-gray-200'}`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  {review.comment && (
+                    <p className="text-xs text-[#33182C]/80 font-light leading-relaxed">{review.comment}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {productData.bundleItems && productData.bundleItems.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-[#D282A8]/20 mt-6">
@@ -317,7 +425,7 @@ export default function ProductDetailsPage({ productData }) {
                   <img src={images[0]} alt={productData.name} className="w-16 h-16 object-cover rounded-xl" />
                   <div className="text-xs">
                     <div className="font-bold text-[#71305D] line-clamp-1">{productData.name}</div>
-                    <div className="text-[#8E507D]">${productData.price}.00</div>
+                    <div className="text-[#8E507D]">${currentPrice}.00</div>
                   </div>
                 </div>
 
@@ -358,7 +466,7 @@ export default function ProductDetailsPage({ productData }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {productData.relatedProducts.map((prod) => (
-                <div key={prod.id} className="bg-white rounded-2xl border border-[#D282A8]/20 p-4 space-y-3 hover:shadow-lg transition-all group">
+                <div key={prod.id} className="bg-white rounded-2xl border border-[#D282A8]/20 p-4 space-y-3 hover:shadow-lg transition-all group relative">
                   <div className="aspect-square rounded-xl overflow-hidden bg-[#FAF4F7]">
                     <img src={prod.image} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>

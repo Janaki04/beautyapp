@@ -8,15 +8,227 @@ import {
 } from './ProductListingComponents';
 import ProductDetailsPage from './ProductDetailsPage';
 import { useLocation } from 'react-router-dom';
+import { useWishlist } from '../components/WishlistContext';
 
 const PRODUCTS_DATA = [
-  { id: 1, name: 'Velvet Matte Lip Silk', category: 'Makeup', brand: 'Lunéva Atelier', price: 34, originalPrice: 42, rating: 4.9, isNew: true, isBestSeller: true, image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800', description: 'Weightless, hydrating matte formula infused with hyaluronic acid.' },
-  { id: 2, name: 'Celestial Glow Niacinamide Serum', category: 'Skincare', brand: 'Aura Botanica', price: 68, originalPrice: 80, rating: 4.8, isNew: false, isBestSeller: true, image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800', description: 'Restores skin barrier luminescence with concentrated vitamin B3.' },
-  { id: 3, name: 'Rose Oud Eau De Parfum', category: 'Fragrances', brand: 'Maison de Rose', price: 125, originalPrice: 145, rating: 5.0, isNew: true, isBestSeller: false, image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800', description: 'Deep Damask rose paired with velvety smoky oud notes.' },
-  { id: 4, name: 'Silk Elixir Hydrating Foundation', category: 'Makeup', brand: 'Lunéva Atelier', price: 52, originalPrice: 60, rating: 4.6, isNew: false, isBestSeller: false, image: 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800', description: 'Second-skin finish with medium buildable glow coverage.' },
-  { id: 5, name: 'Botanical Keratin Hair Treatment', category: 'Haircare', brand: 'Hair Therapy Co.', price: 42, originalPrice: 50, rating: 4.7, isNew: false, isBestSeller: true, image: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80&w=800', description: 'Intense reparative mask for silky smooth, frizz-free tresses.' },
-  { id: 6, name: 'Whipped Shea & Rose Body Butter', category: 'Body Care', brand: 'Aura Botanica', price: 38, originalPrice: 45, rating: 4.9, isNew: true, isBestSeller: false, image: 'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800', description: 'Rich, velvet-soft nourishment for deep 48-hour hydration.' },
-  { id: 7, name: 'Rose Quartz Gua Sha Tool', category: 'Beauty Accessories', brand: 'Lunéva Atelier', price: 28, originalPrice: 35, rating: 4.8, isNew: false, isBestSeller: true, image: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=800', description: 'Hand-carved crystal facial massage tool for sculpted radiance.' }
+  { 
+    id: 1, 
+    name: 'Velvet Matte Lip Silk', 
+    subtitle: 'Hydrating Long-Wear Liquid Lipstick',
+    category: 'Makeup', 
+    brand: 'Lunéva Atelier', 
+    price: 34, 
+    originalPrice: 42, 
+    rating: 4.9, 
+    reviewCount: 128,
+    isNew: true, 
+    isBestSeller: true, 
+    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: 'A weightless, ultra-hydrating matte lip color that provides intense color payoff with a velvety, cushion-soft finish.',
+    description: 'Weightless, hydrating matte formula infused with hyaluronic acid.',
+    details: {
+      description: 'Crafted with fine silk powder and botanical micro-oils, this liquid lip color glides effortlessly for full-coverage matte finish without drying.',
+      howToUse: 'Apply directly to clean lips starting from the center and sweeping outward. Allow 30 seconds to set.',
+      ingredients: 'Dimethicone, Isododecane, Synthetic Wax, Hyaluronic Acid, Tocopherol (Vitamin E), Rosa Canina Fruit Oil, Iron Oxides.'
+    },
+    reviews: [
+      { id: 'r1', author: 'Sophia L.', rating: 5, date: '2 days ago', comment: 'Absolutely stunning texture! Doesn’t dry out my lips at all.' },
+      { id: 'r2', author: 'Elena R.', rating: 5, date: '1 week ago', comment: 'The color intensity is amazing. Lasts through lunch easily.' }
+    ],
+    bundleItems: [
+      { id: 'b1', name: 'Precision Lip Liner', price: 22, image: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=800' }
+    ],
+    relatedProducts: [
+      { id: 4, name: 'Silk Elixir Hydrating Foundation', category: 'Makeup', price: 52, image: 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800' }
+    ]
+  },
+  { 
+    id: 2, 
+    name: 'Celestial Glow Niacinamide Serum', 
+    subtitle: 'Barrier Repair & Radiance Elixir',
+    category: 'Skincare', 
+    brand: 'Aura Botanica', 
+    price: 68, 
+    originalPrice: 80, 
+    rating: 4.8, 
+    reviewCount: 94,
+    isNew: false, 
+    isBestSeller: true, 
+    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: 'Concentrated Niacinamide serum designed to visibly refine pore structure, brighten dark spots, and strengthen the moisture barrier.',
+    description: 'Restores skin barrier luminescence with concentrated vitamin B3.',
+    details: {
+      description: 'Formulated with 10% Niacinamide and Zinc PCA to regulate sebum production while enhancing natural luminescence.',
+      howToUse: 'Dispense 3-4 drops onto cleansed face and neck morning and evening before creams.',
+      ingredients: 'Aqua/Water, Niacinamide (10%), Glycerin, Zinc PCA, Sodium Hyaluronate, Centella Asiatica Extract, Phenoxyethanol.'
+    },
+    reviews: [
+      { id: 'r3', author: 'Marcus V.', rating: 5, date: '3 days ago', comment: 'Game changer for my uneven texture. Noticed results in a week!' }
+    ],
+    bundleItems: [
+      { id: 'b2', name: 'Rose Quartz Gua Sha Tool', price: 28, image: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=800' }
+    ],
+    relatedProducts: [
+      { id: 6, name: 'Whipped Shea & Rose Body Butter', category: 'Body Care', price: 38, image: 'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800' }
+    ]
+  },
+  { 
+    id: 3, 
+    name: 'Rose Oud Eau De Parfum', 
+    subtitle: 'Artisanal Niche Fragrance',
+    category: 'Fragrances', 
+    brand: 'Maison de Rose', 
+    price: 125, 
+    originalPrice: 145, 
+    rating: 5.0, 
+    reviewCount: 42,
+    isNew: true, 
+    isBestSeller: false, 
+    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: 'A captivating blend of rare Damask rose petals and deep, smoky Cambodian oud wrapped in warm amber.',
+    description: 'Deep Damask rose paired with velvety smoky oud notes.',
+    details: {
+      description: 'Handcrafted in small batches using sustainably sourced natural essential oils for maximum longevity and sillage.',
+      howToUse: 'Spritz onto pulse points—wrists, neck, and inner elbows. Do not rub after application.',
+      ingredients: 'Alcohol Denat., Parfum (Fragrance), Rosa Damascena Flower Extract, Aquilaria Agallocha (Oud) Oil, Benzyl Benzoate, Linalool.'
+    },
+    reviews: [
+      { id: 'r4', author: 'Clara M.', rating: 5, date: '5 days ago', comment: 'Intense, romantic, and lasts all day on skin and clothes.' }
+    ],
+    bundleItems: [],
+    relatedProducts: []
+  },
+  { 
+    id: 4, 
+    name: 'Silk Elixir Hydrating Foundation', 
+    subtitle: 'Luminous Second-Skin Fluid',
+    category: 'Makeup', 
+    brand: 'Lunéva Atelier', 
+    price: 52, 
+    originalPrice: 60, 
+    rating: 4.6, 
+    reviewCount: 78,
+    isNew: false, 
+    isBestSeller: false, 
+    image: 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: 'Lightweight fluid foundation offering medium-to-buildable coverage with a natural dewiness.',
+    description: 'Second-skin finish with medium buildable glow coverage.',
+    details: {
+      description: 'Infused with hydrating botanical extracts, this foundation blurs imperfections and evens tone seamlessly.',
+      howToUse: 'Pump onto the back of your hand. Blend onto face using a dense foundation brush or damp beauty sponge.',
+      ingredients: 'Water, Cyclopentasiloxane, Titanium Dioxide, Squalane, Glycerin, Silica, Mica, Triethoxycaprylylsilane.'
+    },
+    reviews: [
+      { id: 'r5', author: 'Hannah T.', rating: 4, date: '2 weeks ago', comment: 'Looks completely natural! Very dewy and comfortable.' }
+    ],
+    bundleItems: [],
+    relatedProducts: [
+      { id: 1, name: 'Velvet Matte Lip Silk', category: 'Makeup', price: 34, image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800' }
+    ]
+  },
+  { 
+    id: 5, 
+    name: 'Botanical Keratin Hair Treatment', 
+    subtitle: 'Deep Conditioning Restorative Mask',
+    category: 'Haircare', 
+    brand: 'Hair Therapy Co.', 
+    price: 42, 
+    originalPrice: 50, 
+    rating: 4.7, 
+    reviewCount: 65,
+    isNew: false, 
+    isBestSeller: true, 
+    image: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: 'Intensive weekly treatment mask that repairs broken hair bonds and seals split ends.',
+    description: 'Intense reparative mask for silky smooth, frizz-free tresses.',
+    details: {
+      description: 'Formulated with plant-derived keratin and cold-pressed Argan oil to nourish compromised hair shafts.',
+      howToUse: 'Apply generously from mid-lengths to ends after shampooing. Leave on for 5-10 minutes, then rinse thoroughly.',
+      ingredients: 'Water, Cetearyl Alcohol, Argania Spinosa Kernel Oil, Hydrolyzed Wheat Protein, Behentrimonium Chloride, Fragrance.'
+    },
+    reviews: [
+      { id: 'r6', author: 'Jessica B.', rating: 5, date: '1 month ago', comment: 'Saved my heat-damaged hair. Soft and smooth again!' }
+    ],
+    bundleItems: [],
+    relatedProducts: []
+  },
+  { 
+    id: 6, 
+    name: 'Whipped Shea & Rose Body Butter', 
+    subtitle: '48-Hour Ultra-Nourishing Cream',
+    category: 'Body Care', 
+    brand: 'Aura Botanica', 
+    price: 38, 
+    originalPrice: 45, 
+    rating: 4.9, 
+    reviewCount: 110,
+    isNew: true, 
+    isBestSeller: false, 
+    image: 'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: 'Rich, cloud-like body butter infused with raw African shea and organic Rosehip oil.',
+    description: 'Rich, velvet-soft nourishment for deep 48-hour hydration.',
+    details: {
+      description: 'Melt-on-contact body moisturizer that absorbs quickly without feeling greasy.',
+      howToUse: 'Massage over towel-dried body after bathing, focusing on dry areas like knees and elbows.',
+      ingredients: 'Butyrospermum Parkii (Shea Butter), Cocos Nucifera (Coconut) Oil, Rosa Canina Fruit Oil, Tocopherol, Fragrance.'
+    },
+    reviews: [
+      { id: 'r7', author: 'Amara K.', rating: 5, date: '3 weeks ago', comment: 'Smells divine and keeps my dry skin soft all day.' }
+    ],
+    bundleItems: [],
+    relatedProducts: [
+      { id: 2, name: 'Celestial Glow Niacinamide Serum', category: 'Skincare', price: 68, image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800' }
+    ]
+  },
+  { 
+    id: 7, 
+    name: 'Rose Quartz Gua Sha Tool', 
+    subtitle: 'Sculpting Facial Massage Stone',
+    category: 'Beauty Accessories', 
+    brand: 'Lunéva Atelier', 
+    price: 28, 
+    originalPrice: 35, 
+    rating: 4.8, 
+    reviewCount: 52,
+    isNew: false, 
+    isBestSeller: true, 
+    image: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=800', 
+    images: [
+      'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=800'
+    ],
+    shortDescription: '100% natural Rose Quartz stone designed to boost lymphatic drainage and relieve facial tension.',
+    description: 'Hand-carved crystal facial massage tool for sculpted radiance.',
+    details: {
+      description: 'Ergonomically contoured tool carved from grade-A crystal to contour jawlines, cheekbones, and brow bones.',
+      howToUse: 'Apply facial oil first. Glide tool gently along face contours in upward and outward strokes.',
+      ingredients: '100% Natural Rose Quartz Crystal.'
+    },
+    reviews: [
+      { id: 'r8', author: 'Nadia P.', rating: 5, date: '2 weeks ago', comment: 'Cooling on the face and really helps with morning puffiness.' }
+    ],
+    bundleItems: [],
+    relatedProducts: []
+  }
 ];
 
 const CATEGORIES = ['Skincare', 'Makeup', 'Haircare', 'Fragrances', 'Body Care', 'Beauty Accessories'];
@@ -32,10 +244,9 @@ export default function ProductListingPage() {
   const [sortBy, setSortBy] = useState('featured');
   const [viewMode, setViewMode] = useState('grid');
   
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const [wishlist, setWishlist] = useState([]);
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
   const [cart, setCart] = useState([]);
-  
   const [activeProduct, setActiveProduct] = useState(null);
   
   const [currentPage, setCurrentPage] = useState(1);
@@ -121,7 +332,6 @@ export default function ProductListingPage() {
           searchQuery={searchQuery} setSearchQuery={setSearchQuery}
           viewMode={viewMode} setViewMode={setViewMode}
           sortBy={sortBy} setSortBy={setSortBy}
-          onOpenMobileFilter={() => setIsMobileFilterOpen(true)}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 pt-8">
@@ -140,7 +350,7 @@ export default function ProductListingPage() {
               <div className="bg-white rounded-3xl p-12 text-center border border-[#D282A8]/20 space-y-3">
                 <Search className="w-8 h-8 text-[#71305D] mx-auto" />
                 <h3 className="text-lg font-serif font-bold text-[#71305D]">No Products Found</h3>
-                <button onClick={handleResetFilters} className="px-5 py-2 bg-[#71305D] text-white text-xs rounded-xl inline-flex items-center gap-1.5">
+                <button onClick={handleResetFilters} className="px-5 py-2 bg-[#71305D] text-white text-xs rounded-xl inline-flex items-center gap-1.5 cursor-pointer">
                   <RotateCcw className="w-3.5 h-3.5" /> Reset Filters
                 </button>
               </div>
@@ -151,9 +361,9 @@ export default function ProductListingPage() {
                     key={product.id}
                     product={product}
                     viewMode={viewMode}
-                    isWishlisted={wishlist.includes(product.id)}
+                    isWishlisted={isInWishlist(product.id)}
                     isInCart={cart.includes(product.id)}
-                    onToggleWishlist={(id) => setWishlist(p => p.includes(id) ? p.filter(i => i !== id) : [...p, id])}
+                    onToggleWishlist={() => toggleWishlist(product)}
                     onToggleCart={(id) => setCart(p => p.includes(id) ? p.filter(i => i !== id) : [...p, id])}
                     onQuickView={(selectedProd) => setActiveProduct(selectedProd)}
                   />

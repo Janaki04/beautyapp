@@ -2,9 +2,11 @@ import React, { use, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Search, Heart, ShoppingBag, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useWishlist } from '../components/WishlistContext';
 
 export default function Header() {
     const navigate= useNavigate();
+    const { wishlistCount } = useWishlist();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(1);
 
@@ -57,6 +59,7 @@ export default function Header() {
               className="text-[#71305D] hover:text-[#8E507D] transition-colors p-1.5 rounded-full hover:bg-[#8E507D]/10 hidden sm:block"
             >
               <Heart className="w-5 h-5 stroke-[1.75]" />
+              
             </Link>
 
             <Link 
@@ -65,9 +68,9 @@ export default function Header() {
               className="relative text-[#71305D] hover:text-[#8E507D] transition-colors p-1.5 rounded-full hover:bg-[#8E507D]/10"
             >
               <ShoppingBag className="w-5 h-5 stroke-[1.75]" />
-              {cartCount > 0 && (
+              {wishlistCount > 0 && (
                 <span className="absolute top-0 right-0 bg-[#FBAEB9] text-[#71305D] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-[#FAF4F7] translate-x-1 -translate-y-1">
-                  {cartCount}
+                 {wishlistCount}
                 </span>
               )}
             </Link>
