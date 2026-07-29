@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
   Droplet,
@@ -16,11 +17,18 @@ import {
 
 export default function Bestseller() {
   const [wishlist, setWishlist] = useState([]);
+  const navigate = useNavigate();
 
   const toggleWishlist = (id) => {
     setWishlist((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
+  };
+
+  // Handler to navigate to Product Listing Page with selected category
+  const handleCategoryClick = (categoryName) => {
+    // Navigates to /shop and passes the selected category via state
+    navigate('/products', { state: { selectedCategory: categoryName } });
   };
 
   const features = [
@@ -32,26 +40,32 @@ export default function Bestseller() {
   const shopCategories = [
     {
       name: 'LIPSTICKS',
+      filterName: 'Makeup', // Maps to PLP filter category
       image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80',
     },
     {
       name: 'FOUNDATIONS',
+      filterName: 'Makeup',
       image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80',
     },
     {
       name: 'SKINCARE',
+      filterName: 'Skincare',
       image: 'https://images.unsplash.com/photo-1608248597263-00079e96447c?auto=format&fit=crop&w=400&q=80',
     },
     {
       name: 'PERFUMES',
+      filterName: 'Fragrances',
       image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80',
     },
     {
       name: 'SERUMS',
+      filterName: 'Skincare',
       image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80',
     },
     {
       name: 'EYE MAKEUP',
+      filterName: 'Makeup',
       image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=400&q=80',
     },
   ];
@@ -127,6 +141,8 @@ export default function Bestseller() {
           animation: float-delayed 10s ease-in-out 2s infinite;
         }
       `}</style>
+
+      {/* Shop By Category Section */}
       <section id="categories" className="py-16 md:py-24 bg-[#FAF4F7] text-[#33182C] relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -135,12 +151,13 @@ export default function Bestseller() {
             </h2>
             <div className="w-12 h-[2px] bg-[#D282A8] mx-auto mt-3" />
           </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
             {shopCategories.map((cat, idx) => (
-              <a
+              <button
                 key={idx}
-                href={`#${cat.name.toLowerCase()}`}
-                className="group flex flex-col items-center text-center focus:outline-none"
+                onClick={() => handleCategoryClick(cat.filterName || cat.name)}
+                className="group flex flex-col items-center text-center focus:outline-none cursor-pointer"
               >
                 <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 border-2 border-[#D282A8]/30 group-hover:border-[#71305D] transition-all duration-500 bg-white shadow-md group-hover:shadow-[0_10px_25px_rgba(113,48,93,0.25)] group-hover:-translate-y-1.5">
                   <div className="w-full h-full rounded-full overflow-hidden relative">
@@ -155,12 +172,13 @@ export default function Bestseller() {
                 <span className="mt-4 text-xs font-semibold tracking-widest text-[#71305D] group-hover:text-[#D282A8] transition-colors duration-200">
                   {cat.name}
                 </span>
-              </a>
+              </button>
             ))}
           </div>
-
         </div>
       </section>
+
+      {/* Bestsellers Section */}
       <section id="bestsellers" className="py-16 md:py-24 bg-white text-[#33182C] relative z-10 border-t border-[#FBAEB9]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-[#FAF4F7] pb-6">
@@ -172,13 +190,13 @@ export default function Bestseller() {
             </div>
 
             <div className="flex items-center gap-4 mt-4 md:mt-0">
-              <a
-                href="#all-products"
+              <button
+                onClick={() => navigate('/shop')}
                 className="text-xs font-bold tracking-widest text-[#71305D] hover:text-[#D282A8] transition-colors uppercase flex items-center gap-1 group"
               >
                 View All Products
                 <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
-              </a>
+              </button>
               <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-gray-200">
                 <button
                   aria-label="Previous Products"
@@ -195,6 +213,7 @@ export default function Bestseller() {
               </div>
             </div>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {bestSellers.map((product) => {
               const isWishlisted = wishlist.includes(product.id);
@@ -229,8 +248,8 @@ export default function Bestseller() {
                         Quick View
                       </button>
                     </div>
-
                   </div>
+
                   <div className="mt-4 flex flex-col flex-grow justify-between">
                     <div>
                       <h3 className="text-xs font-bold tracking-wider text-[#71305D] uppercase line-clamp-1">
@@ -253,12 +272,10 @@ export default function Bestseller() {
                       </div>
                     </div>
                   </div>
-
                 </div>
               );
             })}
           </div>
-
         </div>
       </section>
     </div>

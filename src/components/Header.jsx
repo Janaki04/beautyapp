@@ -11,8 +11,6 @@ export default function Header() {
   const navLinks = [
     { name: 'HOME', path: '/' },
     { name: 'PRODUCTS', path: '/products' },
-    { name: 'ABOUT', path: '/about' },
-    { name: 'CONTACT', path: '/contacts' },
   ];
 
   return (
@@ -52,13 +50,7 @@ export default function Header() {
             ))}
           </nav>
           <div className="flex items-center space-x-4 sm:space-x-5">
-            <button 
-              aria-label="Search"
-              className="text-[#71305D] hover:text-[#8E507D] transition-colors p-1.5 rounded-full hover:bg-[#8E507D]/10"
-            >
-              <Search className="w-5 h-5 stroke-[1.75]" />
-            </button>
-
+           
             <Link 
               to="/wishlist"
               aria-label="Wishlist"
