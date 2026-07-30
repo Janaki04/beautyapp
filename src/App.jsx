@@ -8,6 +8,10 @@ import Home from './pages/Home';
 import ProductListingPage from './pages/ProductListingPage';
 import { WishlistProvider } from './components/WishlistContext';
 import WishlistPage from './pages/WishlistPage';
+import CartPage from './components/CartPage';
+import { CartProvider } from './components/CartContext';
+import AuthPages from './components/AuthPages';
+import FooterInfo from './components/FooterInfo';
 
 
 
@@ -24,6 +28,7 @@ const EmptyPage = () => (
 
 export default function App() {
   return (
+    <CartProvider>
     <WishlistProvider>
     <Router>
       <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -32,12 +37,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<ProductListingPage />} />
-            <Route path="/about" element={<EmptyPage />} />
-            <Route path="/contacts" element={<EmptyPage />} />
             <Route path="/signup" element={<EmptyPage />} />
-            <Route path="/login" element={<EmptyPage />} />
-            <Route path="/cart" element={<EmptyPage />} />
+            <Route path="/login" element={<AuthPages />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/wishlist" element={<WishlistPage />} />
+            <Route path="/info" element={<FooterInfo />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
@@ -55,5 +59,6 @@ export default function App() {
       </div>
     </Router>
     </WishlistProvider>
+    </CartProvider>
   );
 }

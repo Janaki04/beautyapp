@@ -16,11 +16,13 @@ import {
 
 import { shadesData } from '../components/variantsData';
 import { useWishlist } from '../components/WishlistContext';
+import { useCart } from '../components/CartContext';
 
 export default function ProductDetailsPage({ productData }) {
   if (!productData) return null;
 
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToCart } = useCart();
 
   const images = productData.images || (productData.image ? [productData.image] : []);
   const shades = shadesData;
@@ -61,7 +63,19 @@ export default function ProductDetailsPage({ productData }) {
   };
 
   const handleAddToCart = () => {
-    setToastMessage(`${quantity}x ${productData.name} ${selectedShade ? `(${selectedShade.name || selectedShade.title})` : ''} added to your bag`);
+    const shadeInfo = selectedShade ? (selectedShade.name || selectedShade.title) : null;
+    
+    // Add product to context cart state
+    addToCart(
+      {
+        ...productData,
+        price: currentPrice,
+        shade: shadeInfo || productData.shade,
+      },
+      quantity
+    );
+
+    setToastMessage(`${quantity}x ${productData.name} ${shadeInfo ? `(${shadeInfo})` : ''} added to your bag`);
     setAddedToast(true);
     setTimeout(() => setAddedToast(false), 3000);
   };
@@ -252,7 +266,7 @@ export default function ProductDetailsPage({ productData }) {
               </div>
 
               {productData.shortDescription && (
-                <p className="text-xs text-[#33182C]/80 font-light leading-relaxed border-t border-[#D282A8]/15 pt-3">
+                <p className="text-start text-xs text-[#33182C]/80 font-light leading-relaxed border-t border-[#D282A8]/15 pt-3">
                   {productData.shortDescription}
                 </p>
               )}
@@ -260,7 +274,7 @@ export default function ProductDetailsPage({ productData }) {
               {shades.length > 0 && (
                 <div className="space-y-2.5 pt-2">
                   <span className="flex text-xs font-bold text-[#71305D] uppercase tracking-wider block">
-                    Variant / Shade: <span className="font-normal text-[#8E507D]">{selectedShade?.name || selectedShade?.title}</span>
+                    Variant / Shade: <span className="font-normal text-[#8E507D] ml-1">{selectedShade?.name || selectedShade?.title}</span>
                   </span>
                   <div className="flex items-center gap-3 flex-wrap">
                     {shades.map((shade, idx) => {

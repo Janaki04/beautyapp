@@ -3,6 +3,7 @@ import {
   Search, SlidersHorizontal, X, Star, Heart, ShoppingBag, Eye, Check, 
   Grid, List, RotateCcw, ChevronLeft, ChevronRight, Filter 
 } from 'lucide-react';
+import { useCart } from '../components/CartContext';
 
 export const SearchAndSortBar = ({ 
   searchQuery, setSearchQuery, viewMode, setViewMode, sortBy, setSortBy, onOpenMobileFilter 
@@ -156,67 +157,72 @@ export const FilterSidebar = ({
   </aside>
 );
 
-export const ProductCard = ({ product, viewMode, isWishlisted, isInCart, onToggleWishlist, onToggleCart, onQuickView }) => (
-  <div className={`group bg-white rounded-2xl border border-[#D282A8]/20 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex ${
-    viewMode === 'list' ? 'flex-col sm:flex-row' : 'flex-col'
-  }`}>
-    <div className={`relative overflow-hidden bg-[#FAF4F7] ${viewMode === 'list' ? 'sm:w-1/3 aspect-square' : 'aspect-square'}`}>
-      <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-      
-      <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-        {product.isNew && <span className="bg-[#71305D] text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">New</span>}
-        {product.isBestSeller && <span className="bg-[#FBAEB9] text-[#71305D] text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Best Seller</span>}
-      </div>
+export const ProductCard = ({ product, viewMode, isWishlisted, onToggleWishlist, onQuickView }) => {
+  const { addToCart, isInCart } = useCart();
+  const productInCart = isInCart(product.id);
 
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggleWishlist(product);
-        }}
-        aria-label="Wishlist"
-        className="absolute top-3 right-3 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white hover:text-[#FBAEB9] transition-all shadow-xs cursor-pointer"
-      >
-        <Heart className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
-      </button>
-
-      <div className="absolute inset-0 bg-[#71305D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 z-10 pointer-events-none">
-        <button
-          onClick={() => onQuickView(product)}
-          className="pointer-events-auto px-4 py-2 bg-white text-[#71305D] rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 hover:bg-[#FBAEB9] cursor-pointer"
-        >
-          <Eye className="w-3.5 h-3.5" /> View
-        </button>
-      </div>
-    </div>
-
-    <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-      <div>
-        <div className="flex items-center justify-between text-[11px] text-[#8E507D] font-medium mb-1">
-          <span>{product.brand}</span>
-          <div className="flex items-center gap-1 text-[#71305D]">
-            <Star className="w-3 h-3 fill-[#FBAEB9] text-[#FBAEB9]" />
-            <span className="font-bold">{product.rating}</span>
-          </div>
+  return (
+    <div className={`group bg-white rounded-2xl border border-[#D282A8]/20 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex ${
+      viewMode === 'list' ? 'flex-col sm:flex-row' : 'flex-col'
+    }`}>
+      <div className={`relative overflow-hidden bg-[#FAF4F7] ${viewMode === 'list' ? 'sm:w-1/3 aspect-square' : 'aspect-square'}`}>
+        <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        
+        <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+          {product.isNew && <span className="bg-[#71305D] text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">New</span>}
+          {product.isBestSeller && <span className="bg-[#FBAEB9] text-[#71305D] text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Best Seller</span>}
         </div>
-        <h3 className="font-serif font-bold text-base text-[#33182C] group-hover:text-[#71305D] transition-colors">{product.name}</h3>
-        <p className="text-xs text-[#8E507D] mt-1 font-light line-clamp-2">{product.description}</p>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleWishlist(product);
+          }}
+          aria-label="Wishlist"
+          className="absolute top-3 right-3 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md text-[#71305D] hover:bg-white hover:text-[#FBAEB9] transition-all shadow-xs cursor-pointer"
+        >
+          <Heart className={`w-4 h-4 transition-colors ${isWishlisted ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
+        </button>
+
+        <div className="absolute inset-0 bg-[#71305D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 z-10 pointer-events-none">
+          <button
+            onClick={() => onQuickView(product)}
+            className="pointer-events-auto px-4 py-2 bg-white text-[#71305D] rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 hover:bg-[#FBAEB9] cursor-pointer"
+          >
+            <Eye className="w-3.5 h-3.5" /> View
+          </button>
+        </div>
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-[#D282A8]/15">
-        <span className="text-lg font-bold text-[#71305D]">${product.price}.00</span>
-        <button
-          onClick={() => onToggleCart(product.id)}
-          className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-            isInCart ? 'bg-[#8E507D] text-white' : 'bg-[#FBAEB9] text-[#71305D] hover:bg-[#71305D] hover:text-white'
-          }`}
-        >
-          {isInCart ? <Check className="w-3.5 h-3.5" /> : <ShoppingBag className="w-3.5 h-3.5" />}
-          <span>{isInCart ? 'In Bag' : 'Add'}</span>
-        </button>
+      <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+        <div>
+          <div className="flex items-center justify-between text-[11px] text-[#8E507D] font-medium mb-1">
+            <span>{product.brand}</span>
+            <div className="flex items-center gap-1 text-[#71305D]">
+              <Star className="w-3 h-3 fill-[#FBAEB9] text-[#FBAEB9]" />
+              <span className="font-bold">{product.rating}</span>
+            </div>
+          </div>
+          <h3 className="font-serif font-bold text-base text-[#33182C] group-hover:text-[#71305D] transition-colors">{product.name}</h3>
+          <p className="text-xs text-[#8E507D] mt-1 font-light line-clamp-2">{product.description}</p>
+        </div>
+
+        <div className="flex items-center justify-between pt-3 border-t border-[#D282A8]/15">
+          <span className="text-lg font-bold text-[#71305D]">${product.price}.00</span>
+          <button
+            onClick={() => addToCart(product)}
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+              productInCart ? 'bg-[#8E507D] text-white' : 'bg-[#FBAEB9] text-[#71305D] hover:bg-[#71305D] hover:text-white'
+            }`}
+          >
+            {productInCart ? <Check className="w-3.5 h-3.5" /> : <ShoppingBag className="w-3.5 h-3.5" />}
+            <span>{productInCart ? 'In Bag' : 'Add'}</span>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const Pagination = ({ currentPage, totalPages, onPageChange }) => (
   <div className="flex items-center justify-between pt-8 border-t border-[#D282A8]/20">
@@ -252,8 +258,11 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => (
   </div>
 );
 
-export const QuickViewModal = ({ product, onClose, onAddToCart, isWishlisted, onToggleWishlist }) => {
+export const QuickViewModal = ({ product, onClose, isWishlisted, onToggleWishlist }) => {
+  const { addToCart } = useCart();
+
   if (!product) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#71305D]/60 backdrop-blur-xs">
       <div className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-[#D282A8]/30 relative flex flex-col md:flex-row">
@@ -284,7 +293,10 @@ export const QuickViewModal = ({ product, onClose, onAddToCart, isWishlisted, on
           <div className="space-y-3 pt-4 border-t border-[#D282A8]/20">
             <div className="text-2xl font-bold text-[#71305D]">${product.price}.00</div>
             <button
-              onClick={() => { onAddToCart(product.id); onClose(); }}
+              onClick={() => { 
+                addToCart(product); 
+                onClose(); 
+              }}
               className="w-full py-3 bg-[#71305D] text-white rounded-xl text-xs font-bold hover:bg-[#8E507D] flex items-center justify-center gap-2 cursor-pointer transition-colors"
             >
               <ShoppingBag className="w-4 h-4" /> Add to Bag

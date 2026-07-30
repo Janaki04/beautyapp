@@ -14,6 +14,14 @@ import {
 } from 'lucide-react';
 import ProductDetailsPage from './ProductDetailsPage';
 import { useWishlist } from '../components/WishlistContext'; 
+import image1 from "../assets/lipsticl.png"
+import image2 from "../assets/foundations.png"
+import image3 from "../assets/cosemetics.png"
+import image4 from "../assets/perfumeblue.png"
+import image5 from "../assets/serum.png"
+import image6 from "../assets/redfondation.png"
+import image7 from "../assets/perfume.png"
+import image8 from "../assets/foundation.jpeg"
 
 export default function Bestseller() {
   const { toggleWishlist, isInWishlist } = useWishlist(); 
@@ -30,7 +38,7 @@ export default function Bestseller() {
       name: product.name,
       subtitle: product.subtitle,
       category: product.category || 'Makeup',
-      brand: 'Lunéva Atelier',
+      brand: 'Man$JAN Atelier',
       price: parseFloat(product.price.replace('$', '')),
       originalPrice: parseFloat(product.price.replace('$', '')) + 12,
       rating: product.rating,
@@ -66,27 +74,27 @@ export default function Bestseller() {
     {
       name: 'LIPSTICKS',
       filterName: 'Makeup',
-      image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80',
+      image: image1,
     },
     {
       name: 'FOUNDATIONS',
       filterName: 'Makeup',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80',
+      image: image2,
     },
     {
       name: 'SKINCARE',
       filterName: 'Skincare',
-      image: 'https://images.unsplash.com/photo-1608248597263-00079e96447c?auto=format&fit=crop&w=400&q=80',
+      image: image3,
     },
     {
       name: 'PERFUMES',
       filterName: 'Fragrances',
-      image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=80',
+      image: image4,
     },
     {
       name: 'SERUMS',
       filterName: 'Skincare',
-      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80',
+      image: image5,
     },
     {
       name: 'EYE MAKEUP',
@@ -99,57 +107,57 @@ export default function Bestseller() {
     {
       id: 1,
       badge: 'TRENDING',
-      name: 'LUNÉVA MATTE LIPSTICK',
+      name: 'Man$JAN MATTE LIPSTICK',
       subtitle: 'Velvet Rose',
       category: 'Makeup',
       price: '$28.00',
       rating: 4.9,
       reviews: 128,
-      image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80',
+      image: image1,
     },
     {
       id: 2,
       badge: 'NEW ARRIVAL',
-      name: 'LUNÉVA GLOW SERUM',
+      name: 'Man$JAN GLOW SERUM',
       subtitle: 'Radiance Boost',
       category: 'Skincare',
       price: '$56.00',
       rating: 5.0,
       reviews: 94,
-      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80',
+      image: image5,
     },
     {
       id: 3,
       badge: 'LUXURY PICK',
-      name: 'LUNÉVA RADIANCE CREAM',
+      name: 'Man$JAN RADIANCE CREAM',
       subtitle: 'Hydrate & Glow',
       category: 'Skincare',
       price: '$68.00',
       rating: 4.8,
       reviews: 210,
-      image: 'https://images.unsplash.com/photo-1608248597263-00079e96447c?auto=format&fit=crop&w=600&q=80',
+      image: image6,
     },
     {
       id: 4,
       badge: 'POPULAR',
-      name: 'LUNÉVA EAU DE PARFUM',
+      name: 'Man$JAN EAU DE PARFUM',
       subtitle: 'Signature Scent',
       category: 'Fragrances',
       price: '$72.00',
       rating: 4.9,
       reviews: 65,
-      image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80',
+      image: image7,
     },
     {
       id: 5,
       badge: 'EXCLUSIVE',
-      name: 'LUNÉVA SILK FOUNDATION',
+      name: 'Man$JAN SILK FOUNDATION',
       subtitle: 'Flawless Finish',
       category: 'Makeup',
       price: '$42.00',
       rating: 4.7,
       reviews: 88,
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+      image: image8,
     },
   ];
 
@@ -217,7 +225,6 @@ export default function Bestseller() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-[#FAF4F7] pb-6">
             <div>
-              <span className="flex text-xs tracking-[0.25em] text-[#D282A8] font-bold uppercase">Curated Favorites</span>
               <h2 className="text-2xl sm:text-3xl font-serif tracking-[0.15em] text-[#71305D] uppercase font-bold mt-1">
                 Best Sellers
               </h2>

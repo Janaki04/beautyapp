@@ -9,6 +9,14 @@ import {
 import ProductDetailsPage from './ProductDetailsPage';
 import { useLocation } from 'react-router-dom';
 import { useWishlist } from '../components/WishlistContext';
+import image1 from "../assets/lipsticl.png"
+import image2 from "../assets/foundations.png"
+import image3 from "../assets/cosemetics.png"
+import image4 from "../assets/perfumeblue.png"
+import image5 from "../assets/serum.png"
+import image6 from "../assets/redfondation.png"
+import image7 from "../assets/perfume.png"
+import image8 from "../assets/foundation.jpeg"
 
 const PRODUCTS_DATA = [
   { 
@@ -16,16 +24,16 @@ const PRODUCTS_DATA = [
     name: 'Velvet Matte Lip Silk', 
     subtitle: 'Hydrating Long-Wear Liquid Lipstick',
     category: 'Makeup', 
-    brand: 'Lunéva Atelier', 
+    brand: 'Man$JAN Atelier', 
     price: 34, 
     originalPrice: 42, 
     rating: 4.9, 
     reviewCount: 128,
     isNew: true, 
     isBestSeller: true, 
-    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800', 
+    image: image1, 
     images: [
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800',
+      image1,
       'https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?auto=format&fit=crop&q=80&w=800'
     ],
     shortDescription: 'A weightless, ultra-hydrating matte lip color that provides intense color payoff with a velvety, cushion-soft finish.',
@@ -58,10 +66,10 @@ const PRODUCTS_DATA = [
     reviewCount: 94,
     isNew: false, 
     isBestSeller: true, 
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800', 
+    image: image5, 
     images: [
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800',
-      'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800'
+      image5,
+      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800'
     ],
     shortDescription: 'Concentrated Niacinamide serum designed to visibly refine pore structure, brighten dark spots, and strengthen the moisture barrier.',
     description: 'Restores skin barrier luminescence with concentrated vitamin B3.',
@@ -92,9 +100,10 @@ const PRODUCTS_DATA = [
     reviewCount: 42,
     isNew: true, 
     isBestSeller: false, 
-    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800', 
+    image: image4, 
     images: [
-      'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800'
+      image4,
+      image7
     ],
     shortDescription: 'A captivating blend of rare Damask rose petals and deep, smoky Cambodian oud wrapped in warm amber.',
     description: 'Deep Damask rose paired with velvety smoky oud notes.',
@@ -114,16 +123,16 @@ const PRODUCTS_DATA = [
     name: 'Silk Elixir Hydrating Foundation', 
     subtitle: 'Luminous Second-Skin Fluid',
     category: 'Makeup', 
-    brand: 'Lunéva Atelier', 
+    brand: 'Man$JAN Atelier', 
     price: 52, 
     originalPrice: 60, 
     rating: 4.6, 
     reviewCount: 78,
     isNew: false, 
     isBestSeller: false, 
-    image: 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800', 
+    image: image2, 
     images: [
-      'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800'
+      image2
     ],
     shortDescription: 'Lightweight fluid foundation offering medium-to-buildable coverage with a natural dewiness.',
     description: 'Second-skin finish with medium buildable glow coverage.',
@@ -181,9 +190,9 @@ const PRODUCTS_DATA = [
     reviewCount: 110,
     isNew: true, 
     isBestSeller: false, 
-    image: 'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800', 
+    image: image3, 
     images: [
-      'https://images.unsplash.com/photo-1608248597261-833258657640?auto=format&fit=crop&q=80&w=800'
+     image3
     ],
     shortDescription: 'Rich, cloud-like body butter infused with raw African shea and organic Rosehip oil.',
     description: 'Rich, velvet-soft nourishment for deep 48-hour hydration.',
@@ -205,7 +214,7 @@ const PRODUCTS_DATA = [
     name: 'Rose Quartz Gua Sha Tool', 
     subtitle: 'Sculpting Facial Massage Stone',
     category: 'Beauty Accessories', 
-    brand: 'Lunéva Atelier', 
+    brand: 'Man$JAN Atelier', 
     price: 28, 
     originalPrice: 35, 
     rating: 4.8, 
@@ -232,7 +241,7 @@ const PRODUCTS_DATA = [
 ];
 
 const CATEGORIES = ['Skincare', 'Makeup', 'Haircare', 'Fragrances', 'Body Care', 'Beauty Accessories'];
-const BRANDS = ['Lunéva Atelier', 'Aura Botanica', 'Maison de Rose', 'Hair Therapy Co.'];
+const BRANDS = ['Man$JAN Atelier', 'Aura Botanica', 'Maison de Rose', 'Hair Therapy Co.'];
 
 export default function ProductListingPage() {
   const location = useLocation();

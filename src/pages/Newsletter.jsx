@@ -35,7 +35,7 @@ export default function Newsletter() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8E507D]/40 border border-[#FBAEB9]/30">
               <Sparkles className="w-3.5 h-3.5 text-[#FBAEB9]" />
               <span className="text-xs font-semibold tracking-[0.25em] text-[#FBAEB9] uppercase">
-                Join the Lunéva Club
+                Join the Man$JAN Club
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-serif tracking-wide text-white">

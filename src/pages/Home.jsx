@@ -4,6 +4,13 @@ import Bestseller from './Bestseller';
 import Newsletter from './Newsletter';
 import CustomerReviews from './CustomerReviews';
 import NewArrivals from './NewArrivals';
+import image1 from "../assets/lipsticl.png"
+import image2 from "../assets/foundations.png"
+import image3 from "../assets/cosemetics.png"
+import image4 from "../assets/perfumeblue.png"
+import image5 from "../assets/serum.png"
+import image6 from "../assets/—Pngtree—cosmetics beauty makeup skin care_15550074.png"
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const features = [
@@ -24,32 +31,32 @@ export default function Home() {
     {
       name: 'Skincare',
       desc: 'Radiance Serums & Hydrating Toners',
-      image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80',
+      image: image1,
     },
     {
       name: 'Makeup',
       desc: 'Velvet Lipsticks & Luminous Foundations',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
+      image:image2,
     },
     {
       name: 'Haircare',
       desc: 'Nourishing Oils & Restorative Masks',
-      image: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=800&q=80',
+      image: image3,
     },
     {
       name: 'Fragrances',
       desc: 'Signature Botanical Eau De Parfum',
-      image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80',
+      image: image4,
     },
     {
       name: 'Body Care',
       desc: 'Exfoliating Scrubs & Silky Lotions',
-      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
+      image: image5,
     },
     {
       name: 'Beauty Accessories',
       desc: 'Jade Rollers & Luxury Applicators',
-      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80',
+      image: image6,
     },
   ];
   const carouselItems = [...categories, ...categories];
@@ -77,7 +84,7 @@ export default function Home() {
           animation: float-delayed 10s ease-in-out 2s infinite;
         }
         .animate-scroll {
-          animation: scroll-infinite 28s linear infinite;
+          animation: scroll-infinite 20s linear infinite;
         }
         .animate-scroll:hover {
           animation-play-state: paused;
@@ -93,14 +100,14 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8E507D]/30 border border-[#FBAEB9]/20 backdrop-blur-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FBAEB9] animate-pulse" />
                 <span className="text-xs md:text-sm font-semibold tracking-[0.25em] text-[#FBAEB9] uppercase">
-                  New Luxury Collection
+                  Made for you!!
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight tracking-wide text-white">
-                Reveal Your{' '}
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl font-serif leading-tight tracking-wide text-white">
+                Unleash Your Divine{' '}
                 <span className="block text-[#FBAEB9] italic font-normal transition-all duration-500 hover:tracking-wider">
-                  Timeless Glow
+                  Beauty Glow With US..
                 </span>
               </h1>
 
@@ -109,8 +116,8 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                <a
-                  href="#shop"
+                <Link
+                  to="products"
                   className="relative inline-flex items-center justify-center overflow-hidden w-full sm:w-auto bg-[#FBAEB9] text-[#71305D] text-xs font-bold tracking-widest px-8 py-4 uppercase transition-all duration-300 rounded-sm shadow-lg hover:shadow-[0_10px_25px_rgba(251,174,185,0.4)] hover:-translate-y-0.5 group"
                 >
                   <span className="absolute inset-0 w-full h-full bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
@@ -118,7 +125,7 @@ export default function Home() {
                     Shop Now
                     <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
-                </a>
+                </Link>
               </div>
 
               <div className="pt-8 border-t border-[#8E507D]/50 grid grid-cols-3 gap-4">
@@ -159,20 +166,14 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#71305D]/90 via-[#71305D]/30 to-transparent pointer-events-none" />
                       <div className="absolute bottom-6 left-6 right-6 p-4 bg-[#71305D]/80 backdrop-blur-md border border-[#FBAEB9]/30 rounded-xl flex items-center justify-between shadow-lg transition-all duration-300 group-hover:bg-[#71305D]/95 group-hover:border-[#FBAEB9]/60">
                         <div>
-                          <p className="text-xs font-serif text-[#FBAEB9] font-semibold tracking-wider uppercase">
+                          <p className="text-start text-xs font-serif text-[#FBAEB9] font-semibold tracking-wider uppercase">
                             {cat.name}
                           </p>
                           <p className="text-[11px] text-white/90 font-light mt-0.5">
                             {cat.desc}
                           </p>
                         </div>
-                        <a
-                          href={`#${cat.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          aria-label={`Shop ${cat.name}`}
-                          className="p-2.5 bg-[#FBAEB9] text-[#71305D] rounded-full hover:bg-white hover:scale-110 active:scale-95 transition-all duration-200 shadow-md flex-shrink-0"
-                        >
-                          <ArrowRight className="w-4 h-4" />
-                        </a>
+                       
                       </div>
                     </div>
                   ))}

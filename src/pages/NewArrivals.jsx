@@ -6,10 +6,14 @@ import {
   Star, 
   X, 
   Check, 
-  Sparkles,
-  ArrowRight
+  Sparkles
 } from 'lucide-react';
 import { useWishlist } from '../components/WishlistContext';
+import { useCart } from '../components/CartContext';
+import image1 from "../assets/foundation.jpeg"
+import image2 from "../assets/redfondation.png"
+import image3 from "../assets/cosemetics.png"
+import image4 from "../assets/perfume.png"
 
 const PRODUCTS = [
   {
@@ -21,7 +25,7 @@ const PRODUCTS = [
     rating: 4.9,
     reviews: 128,
     badge: 'Best Seller',
-    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800',
+    image: image2,
     description: 'Infused with hydrating hyaluronic acid and rich pigments for a featherweight, all-day matte finish.'
   },
   {
@@ -33,7 +37,7 @@ const PRODUCTS = [
     rating: 5.0,
     reviews: 94,
     badge: 'New Formula',
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800',
+    image: image3,
     description: 'A botanical Niacinamide and Rose Extract serum engineered to restore natural radiance and deep moisture.'
   },
   {
@@ -45,7 +49,7 @@ const PRODUCTS = [
     rating: 4.8,
     reviews: 62,
     badge: 'Limited Edition',
-    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800',
+    image: image4,
     description: 'Notes of Jasmine Sambac, Warm Amber, and Fresh Bergamot create an unforgettable, romantic sillage.'
   },
   {
@@ -57,7 +61,7 @@ const PRODUCTS = [
     rating: 4.7,
     reviews: 215,
     badge: 'Trending',
-    image: 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&q=80&w=800',
+    image: image1,
     description: 'Medium-to-full buildable coverage with a seamless natural satin finish that breathes with your skin.'
   }
 ];
@@ -66,18 +70,18 @@ const CATEGORIES = ['All', 'Makeup', 'Skincare', 'Fragrance'];
 
 export default function NewArrivals() {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [cart, setCart] = useState([]);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [addedToast, setAddedToast] = useState('');
 
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { cart, addToCart } = useCart();
 
   const filteredProducts = activeCategory === 'All' 
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === activeCategory);
 
   const handleAddToCart = (product) => {
-    setCart(prev => [...prev, product.id]);
+    addToCart(product, 1);
     setAddedToast(`${product.name} added to bag!`);
     setTimeout(() => setAddedToast(''), 3000);
   };
@@ -94,12 +98,6 @@ export default function NewArrivals() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-[#D282A8]" />
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#71305D]">
-                Curated Collection
-              </span>
-            </div>
             <h2 className="text-start text-3xl sm:text-4xl font-serif font-bold text-[#71305D] tracking-tight">
               New Arrivals
             </h2>
@@ -127,7 +125,7 @@ export default function NewArrivals() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {filteredProducts.map((product) => {
             const isWishlisted = isInWishlist(product.id);
-            const isInCart = cart.includes(product.id);
+            const isInCart = cart.some((item) => item.id === product.id);
 
             return (
               <div 
@@ -146,7 +144,7 @@ export default function NewArrivals() {
                     {product.badge}
                   </span>
 
-                  {/* Heart / Wishlist Button - High z-index (z-20) guarantees clickability */}
+                  {/* Wishlist Button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -185,6 +183,7 @@ export default function NewArrivals() {
                     </h3>
                     <p className="text-xs text-[#8E507D] mt-0.5">{product.shade}</p>
                   </div>
+
                   <div className="flex items-center justify-between pt-2 border-t border-[#D282A8]/15">
                     <span className="text-lg font-bold text-[#71305D]">
                       ${product.price}.00
@@ -217,6 +216,7 @@ export default function NewArrivals() {
           })}
         </div>
 
+        {/* Quick View Modal */}
         {quickViewProduct && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#71305D]/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-[#D282A8]/30 relative flex flex-col md:flex-row">
@@ -226,6 +226,7 @@ export default function NewArrivals() {
               >
                 <X className="w-5 h-5" />
               </button>
+              
               <div className="md:w-1/2 aspect-square md:aspect-auto bg-[#FAF4F7] relative">
                 <img 
                   src={quickViewProduct.image} 
@@ -243,6 +244,7 @@ export default function NewArrivals() {
                   <Heart className={`w-4 h-4 transition-colors ${isInWishlist(quickViewProduct.id) ? 'fill-[#71305D] text-[#71305D]' : ''}`} />
                 </button>
               </div>
+
               <div className="p-6 md:w-1/2 flex flex-col justify-between space-y-4">
                 <div>
                   <span className="text-[10px] uppercase font-bold tracking-widest text-[#8E507D]">

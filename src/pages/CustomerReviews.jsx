@@ -26,7 +26,7 @@ export default function CustomerReviews() {
       verified: true,
       product: 'Matte Lipstick (Velvet Rose)',
       title: 'Long-lasting & Non-drying',
-      comment: 'Finding a matte lipstick that does not dry out your lips is rare. Lunéva nailed the formula. Staying power is incredible through dinner.',
+      comment: 'Finding a matte lipstick that does not dry out your lips is rare. Man$JAN nailed the formula. Staying power is incredible through dinner.',
       likes: 18,
       avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
     },
@@ -199,7 +199,7 @@ export default function CustomerReviews() {
               Share Your Experience
             </h3>
             <p className="text-xs text-gray-500 mb-6">
-              We value your honest feedback on Lunéva products.
+              We value your honest feedback on Man$JAN products.
             </p>
 
             <form onSubmit={handleAddReview} className="space-y-4">

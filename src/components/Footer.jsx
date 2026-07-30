@@ -4,6 +4,7 @@ import {
   CheckCircle2, 
   ChevronDown 
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const FacebookIcon = (props) => (
   <svg
@@ -59,6 +60,7 @@ const YoutubeIcon = (props) => (
 );
 
 export default function Footer() {
+  const navigate=useNavigate()
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [openSection, setOpenSection] = useState(null);
@@ -77,28 +79,21 @@ export default function Footer() {
 
   const footerLinks = {
     shop: [
-      { name: 'New Arrivals', href: '#new-arrivals' },
-      { name: 'Makeup', href: '#makeup' },
-      { name: 'Skincare', href: '#skincare' },
-      { name: 'Fragrances', href: '#fragrances' },
-      { name: 'Gift Sets', href: '#gift-sets' },
-      { name: 'Best Sellers', href: '#bestsellers' },
+      { name: 'New Arrivals', href: 'products' },
+      { name: 'Makeup', href: 'products' },
+      { name: 'Skincare', href: 'products' },
+      { name: 'Fragrances', href: 'products' },
+      { name: 'Gift Sets', href: 'products' },
+      { name: 'Best Sellers', href: 'products' },
     ],
     customerCare: [
-      { name: 'About Us', href: '#about' },
-      { name: 'Contact Us', href: '#contact' },
-      { name: 'FAQs', href: '#faqs' },
-      { name: 'Shipping & Delivery', href: '#shipping' },
-      { name: 'Returns & Refunds', href: '#returns' },
-      { name: 'Track Your Order', href: '#track' },
+      { name: 'About Us', href: 'info' },
+      { name: 'Contact Us', href: 'info' },
+      { name: 'FAQs', href: 'info' },
+      { name: 'Shipping & Delivery', href: 'info' },
+      { name: 'Returns & Refunds', href: 'info' },
+      { name: 'Track Your Order', href: 'info' },
     ],
-    policies: [
-      { name: 'Privacy Policy', href: '#privacy' },
-      { name: 'Terms & Conditions', href: '#terms' },
-      { name: 'Refund Policy', href: '#refund' },
-      { name: 'Shipping Policy', href: '#shipping-policy' },
-      { name: 'Cookie Policy', href: '#cookie-policy' },
-    ]
   };
 
   return (
@@ -118,7 +113,7 @@ export default function Footer() {
             </div>
 
             <p className="text-start text-xs text-[#FAF4F7]/80 leading-relaxed max-w-sm font-light">
-              Lunéva Beauty brings you the finest cosmetics and skincare products, crafted for timeless elegance and radiant confidence.
+              Man$JAN Beauty brings you the finest cosmetics and skincare products, crafted for timeless elegance and radiant confidence.
             </p>
 
             <div className="flex items-center space-x-3 pt-2">
@@ -222,7 +217,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#FAF4F7]/70 font-light gap-2">
-          <p>© {new Date().getFullYear()} Lunéva Beauty. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} Man$JAN Beauty. All Rights Reserved.</p>
           <div className="flex items-center space-x-4">
             <a href="#privacy" className="hover:text-[#FBAEB9] transition-colors">Privacy</a>
             <span>•</span>
