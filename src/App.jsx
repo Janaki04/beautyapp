@@ -39,7 +39,6 @@ export default function App() {
           <Header />
           
           <main className="flex-grow relative overflow-hidden">
-            {/* mode="wait" ensures old page exits before new page animates down from top */}
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>
                 <Route
