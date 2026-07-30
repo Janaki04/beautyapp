@@ -83,12 +83,12 @@ export default function CartPage() {
   const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
   const freeShippingProgress = Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
-  // Check login status and open checkout or show login prompt
   const handleProceedToCheckout = () => {
     const currentUser = sessionStorage.getItem('currentUser');
 
     if (!currentUser) {
       setAuthError('Please log in or sign up to complete your checkout.');
+       window.scrollTo(0, 0);
       return;
     }
 
@@ -134,7 +134,6 @@ export default function CartPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        {/* Auth Required Alert Banner */}
         {authError && (
           <div className="bg-[#71305D] text-white rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3">
