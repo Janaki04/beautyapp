@@ -18,6 +18,7 @@ import {
 import { useCart } from '../components/CartContext';
 import { useWishlist } from '../components/WishlistContext';
 import CheckoutModal from '../components/CheckoutModal';
+import { Link } from 'react-router-dom';
 
 const VALID_COUPONS = {
   'LUNEVA10': { discountPercent: 10, label: '10% OFF' },
@@ -145,12 +146,12 @@ export default function CartPage() {
                 <p className="text-xs text-white/80">{authError}</p>
               </div>
             </div>
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="px-5 py-2.5 bg-[#FBAEB9] text-[#71305D] font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-white transition-all shadow-xs whitespace-nowrap flex items-center gap-1.5"
             >
               <User className="w-4 h-4" /> Log In / Sign Up
-            </a>
+            </Link>
           </div>
         )}
 
@@ -185,13 +186,13 @@ export default function CartPage() {
               <h2 className="text-lg font-serif font-bold text-[#71305D]">Your bag feels light!</h2>
               <p className="text-xs text-[#8E507D]">Explore our collection and discover your new favorites.</p>
             </div>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#71305D] text-white font-bold text-xs uppercase tracking-widest rounded-2xl hover:bg-[#8E507D] transition-all shadow-md"
             >
               Start Shopping
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

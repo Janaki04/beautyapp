@@ -4,7 +4,7 @@ import {
   CheckCircle2, 
   ChevronDown 
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FacebookIcon = (props) => (
   <svg
@@ -165,9 +165,9 @@ export default function Footer() {
               <ul className={`text-start space-y-2 text-xs text-[#FAF4F7]/80 font-light ${openSection === 'shop' ? 'block' : 'hidden sm:block'}`}>
                 {footerLinks.shop.map((link, idx) => (
                   <li key={idx}>
-                    <a href={link.href} className="hover:text-[#FBAEB9] transition-colors duration-200 block py-0.5">
+                    <Link to={link.href} className="hover:text-[#FBAEB9] transition-colors duration-200 block py-0.5">
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -184,9 +184,9 @@ export default function Footer() {
               <ul className={`text-start space-y-2 text-xs text-[#FAF4F7]/80 font-light ${openSection === 'care' ? 'block' : 'hidden sm:block'}`}>
                 {footerLinks.customerCare.map((link, idx) => (
                   <li key={idx}>
-                    <a href={link.href} className="hover:text-[#FBAEB9] transition-colors duration-200 block py-0.5">
+                    <Link to={link.href} className="hover:text-[#FBAEB9] transition-colors duration-200 block py-0.5">
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
